@@ -17,18 +17,18 @@ const userSchema = new mongoose.Schema({
   photo: String,
   password: {
     type: String,
-    required: [true, 'Please provide password'],
+    required: [true, 'Please provide password!'],
     minlength: 8
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'Please confirm your password'],
+    required: [true, 'Please confirm your password!'],
     // work only on save and create
     validate: {
       validator: function(el) {
         return el === this.password;
       },
-      message: 'Password are not the same'
+      message: 'Password are not the same!'
     }
   }
 });
