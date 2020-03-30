@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "clear && nodemon server.js"
+    "start": "clear && nodemon server.js",
+    "debug": "ndb server.js"
   },
   "repository": {
     "type": "git",
