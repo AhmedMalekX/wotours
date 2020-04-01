@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 const AppError = require('../utils/appError');
 
 const handleCastErrorDB = err => {
@@ -43,6 +45,12 @@ const sendErrorProd = (err, res) => {
   }
 };
 
+const handleJWTError = err =>
+  AppError('Invalide token. Please login again', 401);
+
+const handleJWTExpiredError = err =>
+  AppError('Your token has expired. Please login again.', 401);
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
@@ -55,6 +63,8 @@ module.exports = (err, req, res, next) => {
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError') error = handleValidationDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError(error);
+    if (error.name === 'TokenExpiredError') err = handleJWTExpiredError(error);
     sendErrorProd(error, res);
   }
 };
