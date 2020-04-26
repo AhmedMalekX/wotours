@@ -1,16 +1,13 @@
-/* eslint-disable no-console */
 const mongoose = require('mongoose');
-
 const dotenv = require('dotenv');
 
 process.on('uncaughtException', err => {
-  console.log('Uncaught Exception! 💥 Shutting down...');
+  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.log(err.name, err.message);
   process.exit(1);
 });
 
 dotenv.config({ path: './config.env' });
-
 const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
@@ -22,26 +19,18 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
   })
-  .then(() => {
-    console.log('DB connection successful');
-  })
-  // eslint-disable-next-line no-unused-vars
-  .catch(err => {
-    console.log('ERROR 💥');
-  });
+  .then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 3000;
-const host = '127.0.0.1';
-
 const server = app.listen(port, () => {
-  console.log(`App running at ${host}:${port}`);
+  console.log(`App running on port ${port}...`);
 });
 
 process.on('unhandledRejection', err => {
-  console.log('UnhandledRejection! 💥 Shutting down...');
+  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
